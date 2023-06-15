@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'jobscraper.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'JbDate',
+        'NAME': 'Jobs',
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost',

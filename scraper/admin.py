@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import JbDate
+from .models import Jobs
 # Register your models here.
-admin.site.register(JbDate)
+admin.site.register(Jobs)
