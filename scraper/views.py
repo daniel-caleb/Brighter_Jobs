@@ -101,6 +101,25 @@ for job in divs:
 
     job_info = job_soup.find('div', class_='text-sm text-gray-500')
 
+    for info in job_info:
+        bold_tag =info.find_all('b')
+        content=info.get_text()
+        if bold_tag:
+            job_detail = JobDetails(job=new_job, details=content,bold=True)
+        else:
+            job_detail = JobDetails(job=new_job, details=content,bold=False)
+        job_detail.save()
+
+        next_info = info.find_next_sibling()
+        if next_info and next_info.name == 'ul':
+            ul = info.find_next_sibling('ul')
+            if ul:
+                cont1 = ''
+                for li in ul.find_all('li'):
+                    cont1 = li.text.strip()
+                    content = cont1
+                    job_detail1 = JobDetails(job=new_job, details=content)
+                    job_detail1.save()
 
 
 class JobDetailViewSet(viewsets.ModelViewSet):

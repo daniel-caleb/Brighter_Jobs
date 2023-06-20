@@ -29,3 +29,5 @@ def __str__(self):
 class JobDetails(models.Model):
     job = models.ForeignKey(Jobs, related_name='job_details', on_delete=models.CASCADE)
     details=models.TextField(max_length=20000)
+    bold = models.BooleanField(default=False)
+
