@@ -13,11 +13,14 @@ class JobIndustries(models.Model):
 class JobLocation(models.Model):
     jobLocation = models.TextField(max_length=100)
 
+class JobImages(models.Model):
+    jobImages = models.URLField(max_length=1000)
+
 class Jobs(models.Model):
     job_title =models.CharField(max_length=1000)
     scraped_date = models.CharField(max_length=1000)
     job_link = models.URLField(max_length=5000)
-
+    Job_Image = models.ForeignKey(JobImages, related_name='Job_Images', on_delete=models.CASCADE)
     Job_Function=models.ForeignKey(JobFunctions, related_name='Job_Functions', on_delete=models.CASCADE)
     Job_Industries=models.ForeignKey(JobIndustries, related_name='Job_Industries', on_delete=models.CASCADE)
     Job_Location=models.ForeignKey(JobLocation, related_name='Job_Location', on_delete=models.CASCADE)

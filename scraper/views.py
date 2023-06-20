@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from .models import Jobs, JobFunctions, JobIndustries, JobLocation, JobDetails
+from .models import Jobs, JobFunctions, JobIndustries, JobLocation, JobDetails, JobImages
 from rest_framework import viewsets
-from .serializers import JobSerializer, JobFunctionSerializer, JobIndustriesSerializer, JobLocationSerializer, JobDetailsSerializer
+from .serializers import JobSerializer, JobFunctionSerializer, JobIndustriesSerializer, JobLocationSerializer, JobDetailsSerializer, JobImagesSerializer
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 import requests
@@ -43,6 +43,11 @@ for job in divs:
     job_title = job.find('div',class_="flex items-center").find('p',class_='text-lg font-medium break-words text-link-500').get_text().strip()
     job_link = job.find('div', class_="flex items-center").find('a', class_='relative mb-3 text-lg font-medium break-words focus:outline-none metrics-apply-now text-link-500 text-loading-animate')['href']
     dates = job.find('div',class_="flex flex-row items-start items-center px-5 py-3 w-full border-t border-gray-300").find('p', class_='ml-auto text-sm font-normal text-gray-700 text-loading-animate').get_text().strip()
+    job_image = job.find('img')
+    if job_image:
+        src = job_image.get('src')
+    else:
+        continue
 
     if dates is not None:
         save.scraped_date=dates    
@@ -64,6 +69,8 @@ for job in divs:
     jobFunction, _ = JobFunctions.objects.get_or_create(jobFunction=Job_function_name)
     jobIndustries, _ = JobIndustries.objects.get_or_create(jobIndustries=Job_industries_name)
     jobLocation, _ = JobLocation.objects.get_or_create(jobLocation=Job_location_name)
+    job_image = JobImages(jobImages=src)
+    job_image.save()
 
     new_job = Jobs(
         job_title=job_title,
@@ -71,14 +78,14 @@ for job in divs:
         job_link =job_link,
         Job_Function = jobFunction,
         Job_Industries = jobIndustries,
-        Job_Location = jobLocation
+        Job_Location = jobLocation,
+        Job_Image = job_image
      )
 
     new_job.save()
 
 
         # HERE WE SCRAP THE JOB DETAILS NESTED IN THE JOB LINK !!!
-    # jba=job_soup.find('div',class_='flex flex-col rounded-lg border-gray-300 md:border hover:border-gray-400 md:mx-0')
     jb_summary = job_soup.find('div', class_='py-5 px-4 border-b border-gray-300 md:p-5')
     if jb_summary.find('h3').get_text():
         description=JobDetails()
@@ -141,3 +148,7 @@ class JobIndustriesViewset(viewsets.ModelViewSet):
 class JobLocationViewset(viewsets.ModelViewSet):
     queryset = JobLocation.objects.all()
     serializer_class = JobLocationSerializer
+
+class JobImageViewset(viewsets.ModelViewSet):
+    queryset = JobImages.objects.all()
+    serializer_class = JobImagesSerializer
