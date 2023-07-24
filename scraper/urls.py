@@ -7,5 +7,6 @@ rt = routers.DefaultRouter()
 rt.register(r'jobs', JobViewSet)
 
 urlpatterns = [
-    path('', include(rt.urls))
+    path('', include(rt.urls)),
+    path('api/accounts/' , include('accounts.urls'))
 ]

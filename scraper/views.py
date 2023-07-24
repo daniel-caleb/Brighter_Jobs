@@ -111,7 +111,7 @@ if page.status_code == 200:
         job_info = job_soup.find('div', class_='text-sm text-gray-500')
 
         for info in job_info:
-            bold_tag =info.find_all('b')
+            bold_tag =info.find('b')
             content=info.get_text()
             if bold_tag:
                 job_detail = JobDetails(job=new_job, details=content,bold=True)
