@@ -2,6 +2,19 @@ from rest_framework import serializers
 from .models import Jobs, JobFunctions, JobLocation, JobIndustries, JobDetails, JobImages
 from datetime import datetime, timedelta
 
+
+
+from django.contrib.auth.models import User
+from rest_framework import serializers
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'username', 'email', 'FirstName','LastName']
+
+
+
 class JobDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model=JobDetails

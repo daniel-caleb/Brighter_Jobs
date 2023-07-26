@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from scraper import urls as kim
+from  scraper.views import ListUsers,CustomAuthToken
 # from rest_framework_simplejwt.views import (
 #     TokenObtainPairView,
 #     TokenRefreshView,
@@ -24,6 +25,8 @@ from scraper import urls as kim
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/users/', ListUsers.as_view()),
+    path('api/token/auth/', CustomAuthToken.as_view()),
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('', include(kim))
